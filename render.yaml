@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: oil-management-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB
+        value: oil_management_system
+      - key: JWT_SECRET
+        sync: false
+      - key: CORS_ALLOW_ALL
+        value: true
+  - type: web
+    name: oil-management-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm ci --no-audit --no-fund && node ./node_modules/vite/bin/vite.js build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://oil-management-backend.onrender.com

@@ -1,0 +1,12 @@
+{
+  "name": "oil-management-system-pro-render-vite-fix-v44",
+  "version": "44.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm ci --no-audit --no-fund && node ./node_modules/vite/bin/vite.js build",
+    "start": "cd backend && npm start"
+  }
+}

@@ -1,0 +1,995 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  margin: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(37, 99, 235, .10), transparent 28rem),
+    radial-gradient(circle at 92% 5%, rgba(14, 165, 233, .08), transparent 24rem),
+    linear-gradient(180deg, #f8fbff 0%, #eef4f9 100%);
+  color: #0f172a;
+}
+input, select, textarea, button { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; }
+summary { list-style: none; }
+summary::-webkit-details-marker { display: none; }
+
+.swal2-popup { border-radius: 1.5rem !important; }
+.swal2-title { font-weight: 900 !important; }
+.swal2-html-container { font-weight: 600 !important; }
+
+@layer components {
+  .page-shell { @apply space-y-5 md:space-y-6; }
+  .page-title { @apply text-2xl font-black tracking-tight text-slate-950 md:text-3xl; }
+  .page-subtitle { @apply mt-1 text-sm font-semibold leading-6 text-slate-500; }
+  .hero-clean { @apply rounded-[2rem] bg-gradient-to-br from-slate-950 via-blue-950 to-blue-700 p-5 text-white shadow-2xl shadow-blue-950/20 md:p-7; }
+  .card { @apply rounded-3xl border border-white/80 bg-white/95 shadow-[0_18px_60px_rgba(15,23,42,.075)] backdrop-blur; }
+  .card-clean { @apply rounded-3xl border border-slate-200/80 bg-white shadow-[0_16px_50px_rgba(15,23,42,.06)]; }
+  .mobile-form-card { @apply rounded-3xl border border-slate-200/80 bg-white shadow-[0_16px_50px_rgba(15,23,42,.06)]; }
+  .card-flat { @apply rounded-3xl border border-slate-200 bg-white; }
+  .glass { @apply rounded-3xl border border-white/40 bg-white/75 shadow-lg backdrop-blur-xl; }
+  .label { @apply text-[13px] font-extrabold text-slate-700; }
+  .hint { @apply text-xs font-semibold leading-5 text-slate-400; }
+  .input { @apply w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-[15px] font-semibold text-slate-800 outline-none transition placeholder:text-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400; }
+  .input-compact { @apply w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100; }
+  .field-grid { @apply grid gap-3; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .summary-grid { @apply grid gap-2; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .btn { @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-extrabold transition active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply btn bg-blue-600 text-white shadow-lg shadow-blue-600/20 hover:bg-blue-700; }
+  .btn-dark { @apply btn bg-slate-950 text-white shadow-lg shadow-slate-900/20 hover:bg-slate-800; }
+  .btn-soft { @apply btn bg-slate-100 text-slate-700 hover:bg-slate-200; }
+  .btn-ghost { @apply btn bg-white/10 text-white hover:bg-white/20; }
+  .btn-danger { @apply btn bg-red-600 text-white shadow-lg shadow-red-600/20 hover:bg-red-700; }
+  .badge { @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-black; }
+  .badge-blue { @apply badge bg-blue-50 text-blue-700; }
+  .badge-green { @apply badge bg-emerald-50 text-emerald-700; }
+  .badge-amber { @apply badge bg-amber-50 text-amber-700; }
+  .badge-red { @apply badge bg-red-50 text-red-700; }
+  .section-title { @apply mb-3 flex items-center gap-2 text-sm font-black uppercase tracking-wide text-slate-500; }
+  .section-card { @apply overflow-hidden rounded-[1.75rem] border border-slate-200/90 bg-white shadow-[0_12px_35px_rgba(15,23,42,.045)]; }
+  .section-head { @apply flex items-start gap-3 bg-gradient-to-br from-white via-slate-50 to-blue-50/55 p-4 md:p-5; }
+  .section-icon { @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-700 ring-1 ring-blue-100; }
+  .brand-logo-mobile { @apply flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-1 shadow-lg shadow-slate-900/10 ring-1 ring-slate-200; }
+  .brand-logo-desktop { @apply flex h-20 w-20 items-center justify-center overflow-hidden rounded-[1.65rem] p-1 shadow-lg shadow-blue-950/20 ring-1 ring-white/40; }
+  .login-logo-card { @apply flex h-24 w-24 items-center justify-center overflow-hidden rounded-[2rem] bg-white p-2 shadow-2xl shadow-blue-950/20 ring-1 ring-white/40; }
+
+  .file-picker-card { @apply block rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-blue-200 hover:shadow-md; }
+  .mobile-safe-bottom { padding-bottom: max(6rem, env(safe-area-inset-bottom)); }
+}
+
+.receipt-card { overflow-wrap: anywhere; }
+
+@media (min-width: 768px) {
+  .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1180px) {
+  .summary-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+@media (max-width: 767px) {
+  body { background: linear-gradient(180deg, #f8fbff 0%, #eff6ff 100%); }
+  .page-shell { @apply px-0; }
+  .card, .card-clean, .mobile-form-card { @apply rounded-[1.35rem]; }
+  .input { @apply rounded-xl px-3 py-3 text-[16px]; }
+  .btn { @apply rounded-xl; }
+  .field-grid { grid-template-columns: 1fr; }
+  .receipt-card { @apply mx-0 rounded-[1.35rem]; }
+  .section-card { @apply rounded-[1.35rem]; }
+  .section-head { @apply p-4; }
+  .file-picker-card { @apply rounded-[1.35rem] p-4; }
+}
+
+
+:root[data-device="mobile"] body {
+  background: linear-gradient(180deg, #f8fbff 0%, #eff6ff 100%);
+}
+:root[data-device="mobile"] .field-grid { grid-template-columns: 1fr !important; }
+:root[data-device="mobile"] .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+:root[data-device="mobile"] .page-shell { padding-left: 0 !important; padding-right: 0 !important; }
+:root[data-device="mobile"] .mobile-form-card,
+:root[data-device="mobile"] .receipt-card,
+:root[data-device="mobile"] .card-clean,
+:root[data-device="mobile"] .card { border-radius: 1.35rem !important; }
+:root[data-device="mobile"] .input { border-radius: .9rem !important; font-size: 16px !important; }
+:root[data-device="mobile"] .section-card,
+:root[data-device="mobile"] .file-picker-card { border-radius: 1.35rem !important; }
+
+@media print {
+  body { background: white !important; }
+  .print\:hidden { display: none !important; }
+  .receipt-card { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+}
+
+/* v22 mobile polish: prevent icon/text overlap and keep cards readable on old phones */
+.icon-text-safe { min-width: 0; }
+.icon-text-safe svg { flex-shrink: 0; }
+
+@media (max-width: 420px) {
+  .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; }
+  .summary-grid > * { min-width: 0; padding: .7rem !important; border-radius: 1rem !important; }
+  .summary-grid p { line-height: 1.35; }
+  .receipt-card h3 { font-size: 1.8rem; line-height: 1.05; }
+  .section-head { gap: .75rem; }
+  .section-icon { height: 2.25rem; width: 2.25rem; border-radius: .9rem; }
+  .btn { min-height: 46px; padding-left: .75rem; padding-right: .75rem; }
+  .mobile-form-card > div { padding-left: .85rem; padding-right: .85rem; }
+}
+
+@media (max-width: 360px) {
+  .summary-grid { grid-template-columns: 1fr !important; }
+  .receipt-card h3 { font-size: 1.55rem; }
+}
+
+input, textarea, select {
+  max-width: 100%;
+}
+
+
+
+/* v28 global mobile icon-safe input fixes */
+@layer components {
+  .input-icon-wrap {
+    position: relative;
+    display: block;
+  }
+  .input-icon-left {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    color: #94a3b8;
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+  .input-icon-right-button {
+    position: absolute;
+    right: .6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    display: inline-flex;
+    height: 2.75rem;
+    width: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: .95rem;
+    color: #64748b;
+    transition: background .16s ease, color .16s ease, transform .16s ease;
+    touch-action: manipulation;
+  }
+  .input-icon-right-button:hover { background: #f1f5f9; color: #0f172a; }
+  .input-icon-right-button:active { transform: translateY(-50%) scale(.96); }
+  .input-has-left-icon,
+  .input.input-has-left-icon,
+  input.input-has-left-icon,
+  .input.pl-14,
+  .input.pl-12,
+  .input.pl-10 {
+    padding-left: 3.45rem !important;
+  }
+  .input-has-right-icon,
+  .input.input-has-right-icon,
+  input.input-has-right-icon,
+  .input.pr-14,
+  .input.pr-12,
+  .input.pr-10 {
+    padding-right: 3.65rem !important;
+  }
+}
+
+:root[data-device="mobile"] .input-has-left-icon,
+:root[data-device="mobile"] .input.input-has-left-icon,
+:root[data-device="mobile"] input.input-has-left-icon,
+:root[data-device="mobile"] .input.pl-14,
+:root[data-device="mobile"] .input.pl-12,
+:root[data-device="mobile"] .input.pl-10 {
+  padding-left: 3.45rem !important;
+}
+
+:root[data-device="mobile"] .input-has-right-icon,
+:root[data-device="mobile"] .input.input-has-right-icon,
+:root[data-device="mobile"] input.input-has-right-icon,
+:root[data-device="mobile"] .input.pr-14,
+:root[data-device="mobile"] .input.pr-12,
+:root[data-device="mobile"] .input.pr-10 {
+  padding-right: 3.65rem !important;
+}
+
+@media (max-width: 380px) {
+  .input-icon-left { left: .85rem; width: 1.25rem; height: 1.25rem; }
+  .input-icon-right-button { right: .45rem; width: 2.55rem; height: 2.55rem; }
+  .input-has-left-icon,
+  .input.input-has-left-icon,
+  input.input-has-left-icon,
+  .input.pl-14,
+  .input.pl-12,
+  .input.pl-10 {
+    padding-left: 3.15rem !important;
+  }
+  .input-has-right-icon,
+  .input.input-has-right-icon,
+  input.input-has-right-icon,
+  .input.pr-14,
+  .input.pr-12,
+  .input.pr-10 {
+    padding-right: 3.35rem !important;
+  }
+}
+
+/* v27 mobile footer + login field polish */
+@layer components {
+  .mobile-bottom-nav {
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+  }
+  .mobile-bottom-scroll {
+    display: flex;
+    width: 100%;
+    gap: .55rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: .1rem .1rem .2rem;
+  }
+  .mobile-bottom-scroll::-webkit-scrollbar { display: none; }
+  .mobile-bottom-item {
+    min-width: 5.55rem;
+    min-height: 3.65rem;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .25rem;
+    border-radius: 1.25rem;
+    padding: .55rem .8rem;
+    font-size: .75rem;
+    font-weight: 900;
+    line-height: 1.1;
+    transition: transform .16s ease, background .16s ease, color .16s ease, box-shadow .16s ease;
+    touch-action: manipulation;
+  }
+  .mobile-bottom-item:active { transform: scale(.97); }
+  .mobile-bottom-item-active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    box-shadow: 0 12px 28px rgba(37, 99, 235, .25);
+  }
+  .mobile-bottom-item-normal {
+    background: rgba(241, 245, 249, .78);
+    color: #475569;
+  }
+  .mobile-bottom-item-normal:hover { background: #e2e8f0; color: #0f172a; }
+  .mobile-bottom-logout {
+    min-width: 6.3rem;
+    background: #fff1f2;
+    color: #be123c;
+  }
+  .mobile-bottom-logout:hover { background: #ffe4e6; color: #9f1239; }
+}
+
+:root[data-device="mobile"] .mobile-safe-bottom {
+  padding-bottom: max(7.2rem, calc(env(safe-area-inset-bottom) + 6.5rem)) !important;
+}
+
+@media (max-width: 380px) {
+  .mobile-bottom-item {
+    min-width: 5rem;
+    font-size: .68rem;
+    padding-left: .55rem;
+    padding-right: .55rem;
+  }
+}
+
+/* v30 professional responsive form layout: compact 2-column mobile, wider desktop, clean 2x2 upload cards */
+@layer components {
+  .field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .75rem;
+  }
+  .field-grid > * { min-width: 0; }
+  .field-grid datalist { display: none !important; }
+  .label { line-height: 1.25; }
+  .hint { line-height: 1.35; }
+  .section-card { background: rgba(255,255,255,.98); }
+  .section-head { border-bottom: 1px solid rgba(226,232,240,.75); }
+  .file-picker-card {
+    min-height: 10.25rem;
+    padding: .8rem !important;
+    border-radius: 1.25rem !important;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  }
+}
+
+@media (min-width: 768px) {
+  .field-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1180px) {
+  .field-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: .65rem !important; }
+  .field-grid .input { min-height: 3.25rem; padding-left: .75rem; padding-right: .75rem; }
+  .field-grid .label { font-size: .74rem; }
+  .field-grid .hint { font-size: .66rem; }
+  .section-card { border-radius: 1.4rem !important; }
+  .section-head { padding: .9rem !important; }
+  .section-icon { height: 2.1rem !important; width: 2.1rem !important; border-radius: .85rem !important; }
+  .file-picker-card { min-height: 9.3rem; }
+}
+@media (max-width: 360px) {
+  .field-grid { grid-template-columns: 1fr !important; }
+}
+:root[data-device="mobile"] .field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+@media (max-width: 360px) {
+  :root[data-device="mobile"] .field-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 360px) {
+  .field-grid > .col-span-2 { grid-column: span 1 / span 1 !important; }
+}
+
+
+/* v31 Mobile-first professional grid UI */
+@layer components {
+  .professional-hero {
+    @apply overflow-hidden rounded-[1.7rem] border border-slate-200 bg-white shadow-[0_18px_54px_rgba(15,23,42,.08)];
+  }
+  .professional-card-head {
+    @apply flex items-start gap-3 border-b border-slate-100 bg-gradient-to-br from-white via-sky-50/80 to-cyan-50/60 p-4 md:p-5;
+  }
+  .form-summary-grid {
+    @apply grid gap-2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .capture-header-logo {
+    @apply flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-1 shadow-md ring-1 ring-slate-200;
+  }
+  .receipt-capture-banner {
+    @apply rounded-[1.4rem] border border-teal-100 bg-gradient-to-br from-teal-50 via-white to-blue-50 p-3 shadow-sm;
+  }
+}
+
+:root[data-device="mobile"] .field-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: .7rem !important;
+}
+:root[data-device="mobile"] .field-grid > label,
+:root[data-device="mobile"] .field-grid > div,
+:root[data-device="mobile"] .field-grid > .file-picker-card,
+:root[data-device="mobile"] .field-grid > details {
+  min-width: 0;
+}
+:root[data-device="mobile"] .field-grid .md\:col-span-2,
+:root[data-device="mobile"] .field-grid .col-span-2 {
+  grid-column: span 2 / span 2 !important;
+}
+:root[data-device="mobile"] .file-picker-card {
+  padding: .75rem !important;
+}
+:root[data-device="mobile"] .file-picker-card .grid.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+:root[data-device="mobile"] .section-head {
+  padding: .95rem !important;
+}
+:root[data-device="mobile"] .label {
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+}
+:root[data-device="mobile"] .hint {
+  font-size: 10px !important;
+  line-height: 1.35 !important;
+}
+:root[data-device="mobile"] .input {
+  min-height: 48px !important;
+  padding-left: .85rem !important;
+  padding-right: .85rem !important;
+  font-size: 16px !important;
+}
+:root[data-device="mobile"] .input.pr-20 {
+  padding-right: 3.85rem !important;
+}
+:root[data-device="mobile"] .form-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+
+@media (max-width: 360px) {
+  :root[data-device="mobile"] .field-grid,
+  :root[data-device="mobile"] .form-summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .form-summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media print {
+  .receipt-card { break-inside: avoid; }
+  .mobile-bottom-nav, header, aside, .print-hidden { display: none !important; }
+}
+
+/* v33 screenshot-friendly mobile footer
+   - เลื่อนหน้าแล้วเมนูล่างซ่อนเอง เพื่อไม่ติดเวลาแคปใบสรุป
+   - แตะหน้าจอหนึ่งครั้ง เมนูกลับมาเหมือนแอปทั่วไป */
+.mobile-bottom-nav {
+  will-change: transform, opacity;
+  transition: transform .24s ease, opacity .18s ease, visibility .18s ease;
+}
+.mobile-bottom-nav.is-hidden {
+  transform: translateY(calc(100% + 1.25rem));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.mobile-bottom-nav.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+:root[data-device="mobile"] .mobile-safe-bottom {
+  /* เหลือพื้นที่น้อยลงเมื่อเมนูซ่อนได้ ช่วยให้ใบสรุปแคปเต็มจอกว่าเดิม */
+  padding-bottom: max(2.25rem, env(safe-area-inset-bottom)) !important;
+}
+@media print {
+  .mobile-bottom-nav { display: none !important; }
+}
+
+/* v35 Android keyboard + small-screen form safety
+   กันปัญหา label แตกเป็นคำ ๆ และ input เบียดกันบน Android WebView/มือถือจอเล็ก */
+@layer components {
+  .form-field {
+    display: flex !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: .32rem !important;
+  }
+  .form-field-label {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+  }
+  .form-field-input-wrap {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-top: 0 !important;
+  }
+  .form-field-hint {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-top: 0 !important;
+  }
+  .readonly-value {
+    display: flex !important;
+    min-height: 52px !important;
+    width: 100% !important;
+    align-items: center !important;
+    border-radius: 1rem !important;
+    border: 1px solid #bfdbfe !important;
+    background: #eff6ff !important;
+    padding: .75rem .85rem !important;
+    font-size: 1rem !important;
+    font-weight: 900 !important;
+    color: #1e40af !important;
+  }
+  .field-grid > .form-field,
+  .field-grid > .file-picker-card,
+  .field-grid > .section-card,
+  .field-grid > details,
+  .field-grid > div {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* มือถือ Android/จอแคบ: ให้ช่องกรอกเรียง 1 ช่องต่อแถวเพื่อไม่พังเวลาแป้นพิมพ์เด้ง */
+@media (max-width: 480px) {
+  .field-grid,
+  :root[data-device="mobile"] .field-grid {
+    grid-template-columns: 1fr !important;
+    gap: .9rem !important;
+  }
+  .field-grid > .col-span-2,
+  :root[data-device="mobile"] .field-grid > .col-span-2,
+  :root[data-device="mobile"] .field-grid .md\:col-span-2,
+  :root[data-device="mobile"] .field-grid .col-span-2 {
+    grid-column: 1 / -1 !important;
+  }
+  .form-field-label,
+  :root[data-device="mobile"] .form-field-label,
+  .field-grid .label,
+  :root[data-device="mobile"] .label {
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0 !important;
+  }
+  .form-field-hint,
+  :root[data-device="mobile"] .hint {
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+  }
+  .field-grid .input,
+  :root[data-device="mobile"] .field-grid .input {
+    min-height: 54px !important;
+    width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    border-radius: 1.05rem !important;
+    font-size: 16px !important;
+  }
+  .field-grid .input.pr-20,
+  :root[data-device="mobile"] .field-grid .input.pr-20 {
+    padding-right: 4.25rem !important;
+  }
+  .readonly-value {
+    min-height: 54px !important;
+    border-radius: 1.05rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  .section-card {
+    overflow: hidden !important;
+  }
+  .section-head {
+    align-items: flex-start !important;
+  }
+  .section-head h3 {
+    line-height: 1.28 !important;
+  }
+  .file-picker-card {
+    min-height: auto !important;
+  }
+}
+
+/* จอกว้างขึ้น ใช้ 2 คอลัมน์ตามแนว professional แต่ยังคุมไม่ให้ label/input ทับ */
+@media (min-width: 481px) and (max-width: 767px) {
+  .field-grid,
+  :root[data-device="mobile"] .field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: .8rem !important;
+  }
+}
+
+/* โหมด keyboard/open webview บางรุ่นรายงาน viewport แคบมาก ให้ใช้ safe stack ทันที */
+@media (max-width: 520px) and (max-height: 720px) {
+  .field-grid,
+  :root[data-device="mobile"] .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* v38 professional mobile grid + clean capture workflow */
+@layer components {
+  .field-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  }
+  .form-summary-grid {
+    display: grid;
+    gap: .6rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .section-card { box-shadow: 0 14px 38px rgba(15, 23, 42, .045); }
+  .mobile-form-card { box-shadow: 0 18px 52px rgba(15, 23, 42, .06); }
+  .file-picker-card { min-width: 0; }
+}
+
+/* 2 columns on usable phones, 1 column only on very narrow/old webviews */
+@media (max-width: 389px) {
+  .field-grid,
+  :root[data-device="mobile"] .field-grid {
+    grid-template-columns: 1fr !important;
+    gap: .85rem !important;
+  }
+}
+@media (min-width: 390px) and (max-width: 767px) {
+  .field-grid,
+  :root[data-device="mobile"] .field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: .75rem !important;
+  }
+  .field-grid > .col-span-2,
+  :root[data-device="mobile"] .field-grid > .col-span-2 {
+    grid-column: 1 / -1 !important;
+  }
+  .form-field-label,
+  :root[data-device="mobile"] .form-field-label,
+  .label,
+  :root[data-device="mobile"] .label {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    overflow-wrap: anywhere !important;
+  }
+  .hint,
+  :root[data-device="mobile"] .hint {
+    font-size: 10.5px !important;
+    line-height: 1.35 !important;
+  }
+  .field-grid .input,
+  :root[data-device="mobile"] .field-grid .input,
+  .readonly-value {
+    min-height: 52px !important;
+    padding-left: .82rem !important;
+    padding-right: .82rem !important;
+    font-size: 16px !important;
+  }
+  .field-grid .input.pr-20,
+  :root[data-device="mobile"] .field-grid .input.pr-20 {
+    padding-right: 3.45rem !important;
+  }
+  .field-suffix {
+    right: .75rem !important;
+    font-size: 10.5px !important;
+  }
+  .file-picker-card {
+    padding: .75rem !important;
+    border-radius: 1.15rem !important;
+  }
+}
+
+/* Keep Android keyboard from compressing labels into vertical text */
+@media (max-width: 520px) and (max-height: 650px) {
+  .field-grid,
+  :root[data-device="mobile"] .field-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.capture-modal .btn-primary { min-height: 44px; }
+
+
+/* v40 Mobile App Professional UI
+   เป้าหมาย: ให้เว็บรู้สึกเหมือนแอปมือถือจริง อ่านง่าย ไม่รก และยังรองรับคอม */
+@layer components {
+  .app-page-mobile {
+    padding-top: .25rem;
+  }
+  .app-form-card {
+    border: 1px solid rgba(226, 232, 240, .9) !important;
+    background: rgba(255, 255, 255, .98) !important;
+  }
+  .app-form-hero {
+    border-bottom: 1px solid rgba(226, 232, 240, .78);
+    background:
+      radial-gradient(circle at 18% 8%, rgba(20,184,166,.12), transparent 12rem),
+      linear-gradient(135deg, #ffffff 0%, #f0f9ff 54%, #ecfeff 100%);
+    padding: 1rem;
+  }
+  .app-form-body {
+    background: linear-gradient(180deg, rgba(248,250,252,.55) 0%, #ffffff 100%);
+  }
+  .smart-form-grid {
+    align-items: start;
+  }
+  .app-receipt-card {
+    box-shadow: 0 18px 48px rgba(15,23,42,.075) !important;
+  }
+}
+
+:root[data-device="mobile"] main {
+  width: 100%;
+}
+
+:root[data-device="mobile"] .mobile-form-card,
+:root[data-device="mobile"] .card-clean,
+:root[data-device="mobile"] .receipt-card {
+  border-radius: 1.45rem !important;
+}
+
+:root[data-device="mobile"] .app-form-hero {
+  padding: .95rem !important;
+}
+
+:root[data-device="mobile"] .app-form-body {
+  padding: .75rem !important;
+}
+
+/* form grid: มือถือจอกว้างใช้ 2 ช่อง, จอแคบ/Android รุ่นเก่าใช้ 1 ช่องเพื่อไม่แตก */
+:root[data-device="mobile"] .smart-form-grid {
+  grid-template-columns: 1fr !important;
+  gap: .8rem !important;
+}
+
+@media (min-width: 430px) and (max-width: 767px) {
+  :root[data-device="mobile"] .smart-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: .72rem !important;
+  }
+  :root[data-device="mobile"] .smart-form-grid > .col-span-2,
+  :root[data-device="mobile"] .smart-form-grid > .md\:col-span-2,
+  :root[data-device="mobile"] .smart-form-grid > .xl\:col-span-4 {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .smart-form-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+  .smart-form-grid > .xl\:col-span-4,
+  .smart-form-grid > .col-span-2,
+  .smart-form-grid > .md\:col-span-2 {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+@media (min-width: 1180px) {
+  .smart-form-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* compact, readable mobile fields */
+:root[data-device="mobile"] .section-card {
+  overflow: hidden !important;
+  border: 1px solid rgba(226,232,240,.9) !important;
+  box-shadow: 0 10px 28px rgba(15,23,42,.045) !important;
+}
+:root[data-device="mobile"] .section-head {
+  min-height: auto !important;
+  padding: .85rem .9rem !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+}
+:root[data-device="mobile"] .section-head h3 {
+  font-size: .98rem !important;
+  line-height: 1.25 !important;
+}
+:root[data-device="mobile"] .section-head p {
+  line-height: 1.35 !important;
+}
+:root[data-device="mobile"] .form-field-label,
+:root[data-device="mobile"] .label {
+  color: #475569 !important;
+  font-size: .77rem !important;
+  line-height: 1.35 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+  word-break: keep-all !important;
+  overflow-wrap: anywhere !important;
+}
+:root[data-device="mobile"] .hint {
+  color: #94a3b8 !important;
+  font-size: .68rem !important;
+  line-height: 1.35 !important;
+}
+:root[data-device="mobile"] .input,
+:root[data-device="mobile"] select.input,
+:root[data-device="mobile"] textarea.input,
+:root[data-device="mobile"] .readonly-value {
+  min-height: 50px !important;
+  border-radius: 1rem !important;
+  border-color: #dbe7f3 !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 1px 0 rgba(15,23,42,.03) !important;
+}
+:root[data-device="mobile"] .input:focus {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.12) !important;
+}
+:root[data-device="mobile"] .readonly-value {
+  background: #eff6ff !important;
+  color: #1e3a8a !important;
+}
+:root[data-device="mobile"] .field-suffix {
+  right: .85rem !important;
+  color: #64748b !important;
+}
+:root[data-device="mobile"] .file-picker-card {
+  border-radius: 1.15rem !important;
+  min-height: auto !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+  box-shadow: 0 6px 18px rgba(15,23,42,.035) !important;
+}
+
+/* รูปภาพแนบ: มือถือ 2×2 ชัดเจนเมื่อจอกว้างพอ */
+@media (min-width: 430px) and (max-width: 767px) {
+  :root[data-device="mobile"] .smart-form-grid > .file-picker-card {
+    min-height: 11rem !important;
+  }
+}
+
+/* Summary/receipt cards on mobile */
+:root[data-device="mobile"] .summary-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: .7rem !important;
+}
+@media (max-width: 360px) {
+  :root[data-device="mobile"] .summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+:root[data-device="mobile"] .summary-grid > * {
+  border-radius: 1.1rem !important;
+  padding: .82rem !important;
+}
+:root[data-device="mobile"] .receipt-capture-banner {
+  border-radius: 1.15rem !important;
+}
+:root[data-device="mobile"] .receipt-card h3 {
+  line-height: 1.08 !important;
+}
+
+/* Delivery filter: less clutter on mobile */
+:root[data-device="mobile"] .delivery-filter-grid {
+  grid-template-columns: 1fr !important;
+}
+@media (min-width: 430px) and (max-width: 767px) {
+  :root[data-device="mobile"] .delivery-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  :root[data-device="mobile"] .delivery-filter-grid label:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Bottom nav: app-like floating pill */
+:root[data-device="mobile"] .mobile-bottom-nav {
+  left: .6rem !important;
+  right: .6rem !important;
+  bottom: .55rem !important;
+  border: 1px solid rgba(226,232,240,.9) !important;
+  border-radius: 1.5rem !important;
+  background: rgba(255,255,255,.94) !important;
+  padding: .55rem .55rem max(.55rem, env(safe-area-inset-bottom)) !important;
+  box-shadow: 0 -10px 34px rgba(15,23,42,.12) !important;
+}
+:root[data-device="mobile"] .mobile-bottom-item {
+  min-width: 4.9rem !important;
+  min-height: 3.25rem !important;
+  border-radius: 1.05rem !important;
+}
+
+/* Desktop clean app feel */
+@media (min-width: 768px) {
+  .app-form-hero { padding: 1.25rem 1.5rem; }
+  .app-form-body { padding: 1.25rem 1.5rem; }
+}
+
+/* v43: professional date/time picker cards */
+.smart-date-field {
+  min-width: 0;
+}
+.smart-date-box {
+  margin-top: .25rem;
+  border: 1px solid #dbe7f3;
+  border-radius: 1.15rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  padding: .75rem;
+  box-shadow: 0 1px 0 rgba(15,23,42,.03), 0 10px 24px rgba(37,99,235,.035);
+}
+.smart-date-topline {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  min-width: 0;
+  color: #0f172a;
+}
+.smart-date-icon {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: .9rem;
+  background: #eff6ff;
+  color: #2563eb;
+}
+.smart-date-pretty {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .95rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+.smart-date-input {
+  margin-top: .55rem;
+  width: 100%;
+  min-height: 2.85rem;
+  border-radius: .95rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: .65rem .8rem;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 850;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.smart-date-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+}
+.smart-date-actions {
+  margin-top: .55rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+}
+.smart-date-chip {
+  min-height: 2rem;
+  border-radius: 999px;
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  padding: .35rem .75rem;
+  color: #1d4ed8;
+  font-size: .72rem;
+  font-weight: 950;
+  box-shadow: 0 1px 0 rgba(15,23,42,.03);
+  transition: transform .12s ease, background .12s ease, color .12s ease;
+}
+.smart-date-chip:active { transform: scale(.97); }
+.smart-date-chip.is-active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+.smart-date-chip.is-clear {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+.smart-time-box .smart-date-icon {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+:root[data-device="mobile"] .smart-date-box {
+  border-radius: 1rem !important;
+  padding: .65rem !important;
+  background: #ffffff !important;
+}
+:root[data-device="mobile"] .smart-date-pretty {
+  font-size: .88rem !important;
+  line-height: 1.2 !important;
+}
+:root[data-device="mobile"] .smart-date-input {
+  min-height: 48px !important;
+  border-radius: .9rem !important;
+  font-size: 16px !important;
+  padding: .6rem .7rem !important;
+}
+:root[data-device="mobile"] .smart-date-chip {
+  min-height: 1.85rem !important;
+  padding: .3rem .62rem !important;
+  font-size: .68rem !important;
+}
+@media (max-width: 360px) {
+  :root[data-device="mobile"] .smart-date-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  :root[data-device="mobile"] .smart-date-chip {
+    width: 100% !important;
+  }
+}
+
+/* v43: receipt modal should not imply auto-save; make manual save button prominent */
+.capture-modal .btn-primary {
+  justify-content: center;
+}
