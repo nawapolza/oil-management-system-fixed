@@ -21,12 +21,21 @@ export function useRealtime(onUpdate, enabled = true) {
 
     socket.on('connect', () => setConnected(true));
     socket.on('disconnect', () => setConnected(false));
+    let timer = null;
+    let pending = null;
     socket.on('realtime:update', (payload) => {
       setLastEventAt(payload?.at || new Date().toISOString());
-      callbackRef.current?.(payload);
+      pending = payload;
+      if (timer) return;
+      timer = window.setTimeout(() => {
+        const next = pending;
+        pending = null;
+        timer = null;
+        callbackRef.current?.(next);
+      }, 250);
     });
 
-    return () => socket.close();
+    return () => { if (timer) window.clearTimeout(timer); socket.close(); };
   }, [enabled]);
 
   return { connected, lastEventAt };

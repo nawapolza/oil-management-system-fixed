@@ -1,5 +1,6 @@
 const TOKEN_KEY = 'oilops_token';
 const USER_KEY = 'oilops_user';
+const inflightGets = new Map();
 
 function normalizeBaseUrl(url) {
   const raw = url || import.meta.env.VITE_API_URL || '/api';
@@ -67,13 +68,19 @@ export async function apiRequest(path, options = {}) {
   if (!(options.body instanceof FormData) && options.body !== undefined && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
-  const response = await fetch(buildUrl(path), {
+  const method = String(options.method || 'GET').toUpperCase();
+  const requestKey = method === 'GET' ? `${buildUrl(path)}|${token}` : '';
+  if (requestKey && inflightGets.has(requestKey)) return inflightGets.get(requestKey);
+  const request = fetch(buildUrl(path), {
     ...options,
     cache: 'no-store',
     headers,
     body: options.body instanceof FormData ? options.body : options.body !== undefined ? JSON.stringify(options.body) : undefined,
-  });
-  return parseResponse(response);
+  }).then(parseResponse);
+  if (!requestKey) return request;
+  inflightGets.set(requestKey, request);
+  request.then(() => inflightGets.delete(requestKey), () => inflightGets.delete(requestKey));
+  return request;
 }
 
 function query(params = {}) {
