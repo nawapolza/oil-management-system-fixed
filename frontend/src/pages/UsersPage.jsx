@@ -31,10 +31,13 @@ export default function UsersPage() {
   async function submit(e) {
     e.preventDefault();
     try {
-      if (editing) await api.updateUser(editing.id, form);
-      else await api.createUser(form);
+      const saved = editing ? await api.updateUser(editing.id, form) : await api.createUser(form);
       toastSuccess(editing ? 'แก้ไขผู้ใช้แล้ว' : 'สร้างผู้ใช้แล้ว');
-      setForm(blank); setEditing(null); load(true);
+      const fresh = saved?.data;
+      if (fresh) setUsers((current) => editing
+        ? current.map((item) => item.id === editing.id ? fresh : item)
+        : [fresh, ...current]);
+      setForm(blank); setEditing(null);
     } catch (err) { alertError(err, 'บันทึกผู้ใช้ไม่ได้'); }
   }
 
@@ -47,7 +50,7 @@ export default function UsersPage() {
   async function remove(user) {
     const ok = await confirmDanger(`ปิดใช้งาน ${user.name || user.username}?`, 'ผู้ใช้นี้จะเข้าสู่ระบบไม่ได้');
     if (!ok) return;
-    try { await api.deleteUser(user.id); toastSuccess('ปิดใช้งานผู้ใช้แล้ว'); load(true); } catch (err) { alertError(err, 'ลบผู้ใช้ไม่ได้'); }
+    try { await api.deleteUser(user.id); toastSuccess('ปิดใช้งานผู้ใช้แล้ว'); setUsers((current) => current.filter((item) => item.id !== user.id)); } catch (err) { alertError(err, 'ลบผู้ใช้ไม่ได้'); }
   }
 
   if (loading) return <Loading />;

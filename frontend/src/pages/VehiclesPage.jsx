@@ -35,12 +35,18 @@ export default function VehiclesPage() {
     try {
       const payload = { ...form };
       if (!payload.user_id) delete payload.user_id;
-      if (editing) await api.updateVehicle(editing.id, payload);
-      else await api.createVehicle(payload);
+      const saved = editing ? await api.updateVehicle(editing.id, payload) : await api.createVehicle(payload);
       toastSuccess(editing ? 'แก้ไขรถ/คนขับแล้ว' : 'เพิ่มรถ/คนขับแล้ว');
+      const fresh = saved?.data;
+      if (fresh) {
+        const linked = users.find((item) => String(item.id) === String(fresh.user_id));
+        fresh.employee_name = linked?.name || linked?.username || null;
+        setVehicles((current) => editing
+          ? current.map((item) => item.id === editing.id ? { ...item, ...fresh } : item)
+          : [fresh, ...current]);
+      }
       setForm(blank);
       setEditing(null);
-      load(true);
     } catch (err) {
       alertError(err, 'บันทึกรถ/คนขับไม่ได้');
     }
@@ -64,7 +70,7 @@ export default function VehiclesPage() {
     try {
       await api.deleteVehicle(vehicle.id);
       toastSuccess('ลบรถ/คนขับแล้ว');
-      load(true);
+      setVehicles((current) => current.filter((item) => item.id !== vehicle.id));
     } catch (err) {
       alertError(err, 'ลบรถไม่ได้');
     }

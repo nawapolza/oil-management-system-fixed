@@ -69,6 +69,7 @@ export async function apiRequest(path, options = {}) {
   }
   const response = await fetch(buildUrl(path), {
     ...options,
+    cache: 'no-store',
     headers,
     body: options.body instanceof FormData ? options.body : options.body !== undefined ? JSON.stringify(options.body) : undefined,
   });
