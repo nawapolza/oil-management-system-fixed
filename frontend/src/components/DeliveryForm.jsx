@@ -319,7 +319,8 @@ export default function DeliveryForm({ initialData = null, onSaved }) {
       plate_no: plate,
       vehicle_id: found?.id || old.vehicle_id || '',
       vehicle_no: found?.vehicle_no || old.vehicle_no || '',
-      driver_name: found?.driver_name || old.driver_name || '',
+      // Keep a name already typed for this job; otherwise use the vehicle default.
+      driver_name: old.driver_name || found?.driver_name || '',
     }));
   }
 

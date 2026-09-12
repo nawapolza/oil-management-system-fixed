@@ -766,7 +766,9 @@ async function enrichDelivery(db, delivery) {
   d.employee_username = employee?.username || null;
   d.plate_no = vehicle?.plate_no || null;
   d.vehicle_no = vehicle?.vehicle_no || null;
-  d.driver_name = vehicle?.driver_name || d.driver_name_input || null;
+  // A vehicle may be used by different drivers. The name entered on this
+  // delivery must therefore take precedence over the vehicle default.
+  d.driver_name = d.driver_name_input || vehicle?.driver_name || null;
   const quantity = toNumber(d.quantity_liters, 0);
   const rawAmount = toNumber(d.amount_baht, 0);
   const price = toNumber(d.price_baht_per_liter || d.price_per_liter, 0);
